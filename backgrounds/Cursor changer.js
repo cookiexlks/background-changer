@@ -1,4 +1,4 @@
-javascript:// Define the cursor style options
+// Define the cursor style options
 const cursorOptions = {
   text: 'Text cursor',
   notAllowed: 'Not allowed cursor',
@@ -8,10 +8,16 @@ const cursorOptions = {
   custom: 'Custom cursor image',
 };
 
-// Prompt the user to choose a cursor style
-const choice = prompt('Choose a cursor style:\n\n' +
+// Display the cursor options using an alert
+alert('Choose a cursor style:\n\n' +
   Object.values(cursorOptions).join('\n') + '\n\n' +
-  'Enter the corresponding number for your choice.');
+  'Press OK to proceed.');
+
+// Prompt the user to choose a cursor style using confirm
+let choice;
+while (choice === undefined) {
+  choice = prompt('Enter the corresponding number for your choice.');
+}
 
 let cursorStyle;
 
@@ -37,7 +43,8 @@ switch (choice) {
     break;
   default:
     alert('Invalid choice. Please try again.');
-    return;
+    choice = undefined; // Reset the choice to force the loop to run again
+    continue;
 }
 
 const cursorCSS = `
