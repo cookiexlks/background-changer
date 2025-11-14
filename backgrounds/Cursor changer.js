@@ -8,48 +8,39 @@ const cursorOptions = [
   { label: 'Custom cursor image', value: 'custom' },
 ];
 
-// Create an input field for user selection
-const input = document.createElement('input');
-input.type = 'number';
-input.min = 1;
-input.max = cursorOptions.length;
-input.step = 1;
-input.placeholder = 'Enter the number corresponding to your choice';
-document.body.appendChild(input);
+// Create a select dropdown for user selection
+const select = document.createElement('select');
+select.style.width = '200px';
+document.body.appendChild(select);
 
-// Display the cursor options using an unordered list
-const list = document.createElement('ul');
+// Add options to the select dropdown
 cursorOptions.forEach((option) => {
-  const item = document.createElement('li');
-  item.textContent = `${option.label} (${option.value})`;
-  list.appendChild(item);
+  const opt = document.createElement('option');
+  opt.value = option.value;
+  opt.textContent = option.label;
+  select.appendChild(opt);
 });
-document.body.appendChild(list);
 
-// Add an event listener for the input field
-input.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    const choice = cursorOptions[input.value - 1];
-    if (choice) {
-      let cursorStyle;
-      if (choice.value === 'custom') {
-        cursorStyle = 'url(\'https://example.com/cursor.png\'), auto';
-      } else {
-        cursorStyle = choice.value;
-      }
-
-      const cursorCSS = `
-        cursor: ${cursorStyle};
-      `;
-
-      const style = document.createElement('style');
-      style.innerText = cursorCSS;
-      document.head.appendChild(style);
-
-      // Remove the input field and list after applying the cursor style
-      input.remove();
-      list.remove();
+// Add an event listener for the select dropdown
+select.addEventListener('change', (event) => {
+  const choice = cursorOptions.find((option) => option.value === event.target.value);
+  if (choice) {
+    let cursorStyle;
+    if (choice.value === 'custom') {
+      cursorStyle = 'url(\'https://example.com/cursor.png\'), auto';
+    } else {
+      cursorStyle = choice.value;
     }
+
+    const cursorCSS = `
+      cursor: ${cursorStyle};
+    `;
+
+    const style = document.createElement('style');
+    style.innerText = cursorCSS;
+    document.head.appendChild(style);
+
+    // Remove the select dropdown after applying the cursor style
+    select.remove();
   }
 });
-
