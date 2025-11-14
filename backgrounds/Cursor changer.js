@@ -1,49 +1,55 @@
-javascript:// Define the cursor style options
-const cursorOptions = {
-  text: 'Text cursor',
-  notAllowed: 'Not allowed cursor',
-  progress: 'Progress cursor (spinning wheel)',
-  wait: 'Wait cursor (hourglass)',
-  help: 'Help cursor (question mark)',
-  custom: 'Custom cursor image',
-};
+// Define the cursor style options
+const cursorOptions = [
+  { label: 'Text cursor', value: 'text' },
+  { label: 'Not allowed cursor', value: 'not-allowed' },
+  { label: 'Progress cursor (spinning wheel)', value: 'progress' },
+  { label: 'Wait cursor (hourglass)', value: 'wait' },
+  { label: 'Help cursor (question mark)', value: 'help' },
+  { label: 'Custom cursor image', value: 'custom' },
+];
 
-// Prompt the user to choose a cursor style
-const choice = prompt('Choose a cursor style:\n\n' +
-  Object.values(cursorOptions).join('\n') + '\n\n' +
-  'Enter the corresponding number for your choice.');
+// Create an input field for user selection
+const input = document.createElement('input');
+input.type = 'number';
+input.min = 1;
+input.max = cursorOptions.length;
+input.step = 1;
+input.placeholder = 'Enter the number corresponding to your choice';
+document.body.appendChild(input);
 
-let cursorStyle;
+// Display the cursor options using an unordered list
+const list = document.createElement('ul');
+cursorOptions.forEach((option) => {
+  const item = document.createElement('li');
+  item.textContent = `${option.label} (${option.value})`;
+  list.appendChild(item);
+});
+document.body.appendChild(list);
 
-// Set the cursor style based on the user's choice
-switch (choice) {
-  case '1':
-    cursorStyle = 'text';
-    break;
-  case '2':
-    cursorStyle = 'not-allowed';
-    break;
-  case '3':
-    cursorStyle = 'progress';
-    break;
-  case '4':
-    cursorStyle = 'wait';
-    break;
-  case '5':
-    cursorStyle = 'help';
-    break;
-  case '6':
-    cursorStyle = 'url(\'https://example.com/cursor.png\'), auto';
-    break;
-  default:
-    alert('Invalid choice. Please try again.');
-    return;
-}
+// Add an event listener for the input field
+input.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    const choice = cursorOptions[input.value - 1];
+    if (choice) {
+      let cursorStyle;
+      if (choice.value === 'custom') {
+        cursorStyle = 'url(\'https://example.com/cursor.png\'), auto';
+      } else {
+        cursorStyle = choice.value;
+      }
 
-const cursorCSS = `
-  cursor: ${cursorStyle};
-`;
+      const cursorCSS = `
+        cursor: ${cursorStyle};
+      `;
 
-const style = document.createElement('style');
-style.innerText = cursorCSS;
-document.head.appendChild(style);
+      const style = document.createElement('style');
+      style.innerText = cursorCSS;
+      document.head.appendChild(style);
+
+      // Remove the input field and list after applying the cursor style
+      input.remove();
+      list.remove();
+    }
+  }
+});
+
